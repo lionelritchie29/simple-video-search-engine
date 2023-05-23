@@ -1,25 +1,36 @@
 window.addEventListener('DOMContentLoaded', () => {
-  const resultContainer = document.getElementById('custom-search-results');
   const resultCardTemplate = document.getElementById('result-card-template');
+  const originalSearchResultContainer = document.getElementById('search-results');
+  let currentResults = [];
 
   const onSearchResultReadyCallback = (name, q, promos, results, resultsDiv) => {
-    document.getElementById('search-results').style.display = 'none';
-    console.log({ name, q, promos, results, resultsDiv });
+    currentResults = results;
+  };
 
-    resultContainer.innerHTML = '';
-    results.forEach((result) => {
+  const onResultRenderedCallback = (name, q, promos, results) => {
+    const resultElements = originalSearchResultContainer.getElementsByClassName('gsc-result');
+    const adBlocks = originalSearchResultContainer.getElementsByClassName('gsc-adBlock');
+
+    console.log({ adBlocks });
+
+    let index = 0;
+    for (const resultElm of resultElements) {
       const resultCard = resultCardTemplate.content.cloneNode(true);
-      resultCard.getElementById('result-card-thumbnail').src = result.thumbnailImage.url;
-      resultCard.getElementById('result-card-title').innerHTML = result.title;
-      resultCard.getElementById('result-card-by').innerText = result.richSnippet.person.name;
-      resultCard.getElementById('result-card-url').innerText = result.visibleUrl;
-      if (result.richSnippet.videoobject) {
+      resultCard.getElementById('result-card-thumbnail').src =
+        currentResults[index].thumbnailImage.url;
+      resultCard.getElementById('result-card-title').innerHTML = currentResults[index].title;
+      resultCard.getElementById('result-card-by').innerText =
+        currentResults[index].richSnippet.person.name;
+      resultCard.getElementById('result-card-url').innerText = currentResults[index].visibleUrl;
+      if (currentResults[index].richSnippet.videoobject) {
         resultCard.getElementById('result-card-view-count').innerText =
-          result.richSnippet.videoobject.interactioncount;
+          currentResults[index].richSnippet.videoobject.interactioncount;
       }
 
-      resultContainer.appendChild(resultCard);
-    });
+      resultElm.innerHTML = '';
+      resultElm.appendChild(resultCard);
+      index++;
+    }
   };
 
   const onStartSearchCallback = (gname, query) => {
@@ -32,6 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
     web: {
       starting: onStartSearchCallback,
       ready: onSearchResultReadyCallback,
+      rendered: onResultRenderedCallback,
     },
   };
 });
