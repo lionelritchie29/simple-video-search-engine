@@ -157,6 +157,11 @@ header h1 {
   border: none !important;
 }
 
+.gsc-above-wrapper-area,
+.gsc-adBlock {
+  display: none !important;
+}
+
 @media screen and (min-width: 480px) {
   body {
     max-width: 420px;
