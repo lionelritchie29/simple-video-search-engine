@@ -16,16 +16,17 @@
       <h1>Simple Video Search Engine</h1>
     </header>
     <main>
-      <div class="gcse-searchbox" data-as_sitesearch="youtube.com"></div>
+      <div
+        class="gcse-searchbox"
+        data-filter="1"
+        data-sort_by="interactioncount"
+        data-as_sitesearch="youtube.com"
+      ></div>
 
       <ul id="custom-search-results"></ul>
 
       <div id="search-results" style="display: none">
-        <div
-          class="gcse-searchresults"
-          data-sort_by="interactioncount"
-          data-refinementStyle="link"
-        ></div>
+        <div class="gcse-searchresults" data-refinementStyle="link"></div>
       </div>
     </main>
 
@@ -37,16 +38,19 @@
   <li>
     <div class="result-card">
       <img
+        id="result-card-thumbnail"
         class="result-card__thumbnail"
         src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRVnegVhAnN6yi0NVJ81bz7ifvSu-y5WCynt_69M-KZIJKAQ3B-NZl510Tw"
         alt=""
       />
       <div class="result-card__desc">
-        <h2>K-pop group BLACKPINK to release Ready for Love in United States</h2>
-        <div class="result-card__desc__by">BlackPink</div>
+        <h2 id="result-card-title">
+          K-pop group BLACKPINK to release Ready for Love in United States
+        </h2>
+        <div id="result-card-by" class="result-card__desc__by">BlackPink</div>
         <div class="result-card__desc__meta">
-          <span>Youtube.com</span>
-          <span>100M views</span>
+          <span id="result-card-url"></span>
+          <span id="result-card-view-count"></span>
         </div>
       </div>
     </div>
