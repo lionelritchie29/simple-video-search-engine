@@ -1,9 +1,12 @@
 window.addEventListener('DOMContentLoaded', () => {
   const resultCardTemplate = document.getElementById('result-card-template');
   const originalSearchResultContainer = document.getElementById('search-results');
+  const overlayElement = document.getElementById('view-overlay');
+
   let currentResults = [];
 
   const onSearchResultReadyCallback = (name, q, promos, results, resultsDiv) => {
+    console.log({ results });
     currentResults = results;
   };
 
