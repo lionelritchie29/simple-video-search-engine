@@ -16,7 +16,39 @@
       <h1>Simple Video Search Engine</h1>
     </header>
     <main>
-      <div class="gcse-searchbox-only"></div>
+      <div class="gcse-searchbox" data-as_sitesearch="youtube.com"></div>
+
+      <ul id="custom-search-results"></ul>
+
+      <div id="search-results" style="display: none">
+        <div
+          class="gcse-searchresults"
+          data-sort_by="interactioncount"
+          data-refinementStyle="link"
+        ></div>
+      </div>
     </main>
+
+    <script type="module" src="./index.js"></script>
   </body>
 </html>
+
+<template id="result-card-template">
+  <li>
+    <div class="result-card">
+      <img
+        class="result-card__thumbnail"
+        src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRVnegVhAnN6yi0NVJ81bz7ifvSu-y5WCynt_69M-KZIJKAQ3B-NZl510Tw"
+        alt=""
+      />
+      <div class="result-card__desc">
+        <h2>K-pop group BLACKPINK to release Ready for Love in United States</h2>
+        <div class="result-card__desc__by">BlackPink</div>
+        <div class="result-card__desc__meta">
+          <span>Youtube.com</span>
+          <span>100M views</span>
+        </div>
+      </div>
+    </div>
+  </li>
+</template>

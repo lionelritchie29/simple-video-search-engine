@@ -12,10 +12,16 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+ul,
+li {
   background-color: #fafafa;
   margin: 0;
   padding: 0;
+}
+
+li {
+  list-style-type: none;
 }
 
 main {
@@ -37,4 +43,52 @@ header .logo img {
 header h1 {
   font-size: 1.1rem;
   margin-left: 1rem;
+}
+
+#search-results {
+  margin-top: 1rem;
+}
+
+#custom-search-results {
+  margin-top: 1rem;
+}
+
+.result-card {
+  display: flex;
+  background-color: white;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); */
+}
+
+.result-card__thumbnail {
+  width: 42.5%;
+  aspect-ratio: 16/9;
+  border-radius: 0.5rem;
+}
+
+.result-card__desc {
+  margin-left: 1rem;
+}
+
+.result-card__desc h2 {
+  font-size: 16px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  background-color: white;
+}
+
+.result-card__desc__by {
+  color: #9499a6;
+  font-size: 12px;
+  margin-top: 0.5rem;
+}
+
+.result-card__desc__meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 0.75rem;
+  font-weight: 500;
 }
