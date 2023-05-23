@@ -25,15 +25,13 @@
 
     <div id="view-overlay" style="display: none">
       <div style="width: 100%">
-        <iframe
-          width="100%"
-          src="https://www.youtube.com/embed/ioNng23DkIM"
-          frameborder="0"
-        ></iframe>
+        <iframe id="view-overlay-src" width="100%" src="" frameborder="0"></iframe>
       </div>
 
       <div id="view-overlay-actions">
-        <button class="view-overlay__button" id="view-overlay-visit">Visit</button>
+        <a target="_blank" rel="noreferrer" href="">
+          <button class="view-overlay__button" id="view-overlay-visit">Visit</button>
+        </a>
         <button class="view-overlay__button" id="view-overlay-close">Close</button>
       </div>
     </div>
@@ -43,7 +41,7 @@
 </html>
 
 <template id="result-card-template">
-  <div class="result-card">
+  <div class="result-card" data-index="100" id="result-card">
     <img
       id="result-card-thumbnail"
       class="result-card__thumbnail"
