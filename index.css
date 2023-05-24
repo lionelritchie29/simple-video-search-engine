@@ -62,6 +62,7 @@ header h1 {
   position: relative;
   cursor: pointer;
   padding: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .result-card__thumbnail {
@@ -143,7 +144,7 @@ header h1 {
 
 .gsc-result {
   border-bottom: none !important;
-  padding-bottom: 0 !important;
+  padding: 0 !important;
 }
 
 .gsc-cursor-box {
@@ -161,6 +162,13 @@ header h1 {
 .gsc-above-wrapper-area,
 .gsc-adBlock {
   display: none !important;
+}
+
+.gsc-cursor-container-next,
+.gsc-cursor-container-previous {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media screen and (min-width: 480px) {
