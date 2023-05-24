@@ -1,9 +1,9 @@
 export const truncateViewCount = (count) => {
   let multiplyCount = 0;
   const multiplyMap = {
-    1: 'K',
-    2: 'M',
-    3: 'B',
+    1: 'k',
+    2: 'm',
+    3: 'b',
   };
 
   while (count > 1000) {
