@@ -1,4 +1,5 @@
 import { constructUrlQueryMap } from './utils/construct-url-query-map.js';
+import { truncateViewCount } from './utils/truncate-view-count.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   const resultCardTemplate = document.getElementById('result-card-template');
@@ -61,7 +62,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     if (hasVideoObject) {
-      viewCount.innerText = data.richSnippet.videoobject.interactioncount;
+      const rawViewCount = data.richSnippet.videoobject.interactioncount;
+      viewCount.innerText = truncateViewCount(Number(rawViewCount)) + ' views';
     }
 
     elm.addEventListener('click', function (e) {
