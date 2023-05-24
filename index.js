@@ -80,8 +80,19 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const onSearchResultReadyCallback = (name, q, promos, results, resultsDiv) => {
-    console.log({ results });
-    currentResults = results;
+    currentResults = results.sort((first, second) => {
+      const firstVideoObj = first.richSnippet.videoobject;
+      const secondVideoObj = second.richSnippet.videoobject;
+
+      let firstCompareValue = 0;
+      let secondCompareValue = 0;
+
+      if (firstVideoObj) firstCompareValue = Number(firstVideoObj.interactioncount);
+      if (secondVideoObj) secondCompareValue = Number(secondVideoObj.interactioncount);
+
+      return secondCompareValue - firstCompareValue;
+    });
+    console.log({ currentResults });
   };
 
   const onResultRenderedCallback = (name, q, promos, results) => {
