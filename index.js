@@ -1,6 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
   const resultCardTemplate = document.getElementById('result-card-template');
-  const originalSearchResultContainer = document.getElementById('search-results');
   const overlayElement = document.getElementById('view-overlay');
   const closeOverlayBtn = document.getElementById('view-overlay-close');
   const overlayIframeElm = document.getElementById('view-overlay-src');
@@ -15,33 +14,36 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   const onResultRenderedCallback = (name, q, promos, results) => {
-    const resultElements = originalSearchResultContainer.getElementsByClassName('gsc-result');
-    const adBlocks = originalSearchResultContainer.getElementsByClassName('gsc-adBlock');
-
-    console.log({ adBlocks });
-
     let index = 0;
-    for (const resultElm of resultElements) {
+    for (const resultElm of results) {
+      const data = currentResults[index];
       const resultCard = resultCardTemplate.content.cloneNode(true);
-      resultCard.getElementById('result-card-thumbnail').src =
-        currentResults[index].thumbnailImage.url;
-      resultCard.getElementById('result-card-title').innerHTML = currentResults[index].title;
-      resultCard.getElementById('result-card-by').innerText =
-        currentResults[index].richSnippet.person.name;
-      resultCard.getElementById('result-card-url').innerText = currentResults[index].visibleUrl;
-      if (currentResults[index].richSnippet.videoobject) {
-        resultCard.getElementById('result-card-view-count').innerText =
-          currentResults[index].richSnippet.videoobject.interactioncount;
-      }
-      resultCard.getElementById('result-card').setAttribute('data-index', index);
+      const elm = resultCard.getElementById('result-card');
+      const thumbnail = resultCard.getElementById('result-card-thumbnail');
+      const title = resultCard.getElementById('result-card-title');
+      const person = resultCard.getElementById('result-card-by');
+      const viewCount = resultCard.getElementById('result-card-view-count');
 
-      resultCard.getElementById('result-card').addEventListener('click', function (e) {
+      elm.setAttribute('data-index', index);
+      thumbnail.src = data.thumbnailImage.url;
+      title.innerHTML = data.title;
+
+      if (data.richSnippet.person) {
+        person.innerText = data.richSnippet.person.name;
+      }
+
+      if (data.richSnippet.videoobject) {
+        viewCount.innerText = data.richSnippet.videoobject.interactioncount;
+      }
+
+      elm.addEventListener('click', function (e) {
         overlayElement.style.display = 'flex';
+        const curr = currentResults[dataIdx];
 
         const dataIdx = e.target.offsetParent.getAttribute('data-index');
-        if (currentResults[dataIdx].richSnippet.videoobject) {
-          overlayIframeElm.src = currentResults[dataIdx].richSnippet.videoobject.embedurl;
-          activeOverlayLink = currentResults[dataIdx].richSnippet.videoobject.url;
+        if (curr.richSnippet.videoobject) {
+          overlayIframeElm.src = curr.richSnippet.videoobject.embedurl;
+          activeOverlayLink = curr.richSnippet.videoobject.url;
         }
       });
 
