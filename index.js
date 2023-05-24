@@ -1,3 +1,5 @@
+import { constructUrlQueryMap } from './utils/construct-url-query-map.js';
+
 window.addEventListener('DOMContentLoaded', () => {
   const resultCardTemplate = document.getElementById('result-card-template');
   const overlayElement = document.getElementById('view-overlay');
@@ -9,21 +11,11 @@ window.addEventListener('DOMContentLoaded', () => {
   let currentResults = [];
   let activeOverlayLink = '';
 
-  const constructUrlQueryMap = () => {
-    const queries = window.location.hash.slice(1).split('&');
-    const processedQueries = queries.map((q) => {
-      const raw = q.split('=');
-      const obj = {};
-      obj[raw[0]] = raw[1];
-      return obj;
-    });
-    return processedQueries;
-  };
-
   const adjustNavigationStyle = () => {
     const queryMap = constructUrlQueryMap();
 
     if (queryMap['gsc.page'] && queryMap['gsc.page'] != '1') {
+      console.log('Adjust Navigation');
       const pageNumberElms = searchResultContainer.getElementsByClassName(
         'gsc-cursor-numbered-page',
       );
@@ -50,6 +42,43 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const buildResultCard = (data, index) => {
+    const hasVideoObject = data.richSnippet.videoobject;
+    const hasPerson = data.richSnippet.person;
+    const resultCard = resultCardTemplate.content.cloneNode(true);
+    const elm = resultCard.getElementById('result-card');
+    const thumbnail = resultCard.getElementById('result-card-thumbnail');
+    const title = resultCard.getElementById('result-card-title');
+    const person = resultCard.getElementById('result-card-by');
+    const viewCount = resultCard.getElementById('result-card-view-count');
+
+    elm.setAttribute('data-index', index);
+    thumbnail.src = data.thumbnailImage.url;
+    title.innerHTML = data.title;
+
+    if (hasPerson) {
+      person.innerText = data.richSnippet.person.name;
+    }
+
+    if (hasVideoObject) {
+      viewCount.innerText = data.richSnippet.videoobject.interactioncount;
+    }
+
+    elm.addEventListener('click', function (e) {
+      overlayElement.style.display = 'flex';
+
+      const dataIdx = e.target.offsetParent.getAttribute('data-index');
+      const curr = currentResults[dataIdx];
+
+      if (curr.richSnippet.videoobject) {
+        overlayIframeElm.src = curr.richSnippet.videoobject.embedurl;
+        activeOverlayLink = curr.richSnippet.videoobject.url;
+      }
+    });
+
+    return resultCard;
+  };
+
   const onSearchResultReadyCallback = (name, q, promos, results, resultsDiv) => {
     console.log({ results });
     currentResults = results;
@@ -58,50 +87,18 @@ window.addEventListener('DOMContentLoaded', () => {
   const onResultRenderedCallback = (name, q, promos, results) => {
     let index = 0;
     for (const resultElm of results) {
+      resultElm.innerHTML = '';
       const data = currentResults[index];
-      const hasVideoObject = data.richSnippet.videoobject;
-      const hasPerson = data.richSnippet.person;
+      const videoObject = data.richSnippet.videoobject;
 
-      if (!hasVideoObject) {
-        resultElm.innerHTML = '';
+      if (!videoObject || (videoObject.genre && videoObject.genre != 'Music')) {
         index++;
         continue;
       }
 
-      const resultCard = resultCardTemplate.content.cloneNode(true);
-      const elm = resultCard.getElementById('result-card');
-      const thumbnail = resultCard.getElementById('result-card-thumbnail');
-      const title = resultCard.getElementById('result-card-title');
-      const person = resultCard.getElementById('result-card-by');
-      const viewCount = resultCard.getElementById('result-card-view-count');
+      const resultCard = buildResultCard(data, index);
 
-      elm.setAttribute('data-index', index);
-      thumbnail.src = data.thumbnailImage.url;
-      title.innerHTML = data.title;
-
-      if (hasPerson) {
-        person.innerText = data.richSnippet.person.name;
-      }
-
-      if (hasVideoObject) {
-        viewCount.innerText = data.richSnippet.videoobject.interactioncount;
-      }
-
-      elm.addEventListener('click', function (e) {
-        overlayElement.style.display = 'flex';
-
-        const dataIdx = e.target.offsetParent.getAttribute('data-index');
-        const curr = currentResults[dataIdx];
-
-        if (curr.richSnippet.videoobject) {
-          overlayIframeElm.src = curr.richSnippet.videoobject.embedurl;
-          activeOverlayLink = curr.richSnippet.videoobject.url;
-        }
-      });
-
-      resultElm.innerHTML = '';
       resultElm.appendChild(resultCard);
-
       index++;
     }
 
